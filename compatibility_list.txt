@@ -1,0 +1,42 @@
+##Главная страница
+##    template: main_page.html
+##    parameters: {'tops': список топов (каждый топ - <class Top>),
+##                 'personal': список книг персональных рекомендаций (каждая книга - <class Book>
+
+
+##Страница топа
+##    template: top_page.html
+##    parameteres: {'top': <class Top>}
+
+
+##Страница книги
+##    template: book_page.html
+##    parameters: {'book': <class Book>,
+##                 'is_recommended': True/False (в зависимости от того, находится ли она в персональных рекомендациях
+##                    пользователя. Для неавторизованных пользователей всегда false),
+##                 'is_favourite': True/False,
+##                 'is_in_wish_list': True/False,
+##                 'is_finished': True/False,
+##                 'top_list': список топов, в которых присутствует, если их нет, то пустой список (каждый топ - <class Top>),
+##                 'reviews': список отзывов (каждый отзыв - <class Review>)}
+
+
+
+## То, что тебе надо знать об этих классах (top, book и review [те, что с маленькой буквы] это примеры объектов классов,
+## на их место нужно подставить то, как ты их назовешь)
+class Top:
+    #top.books() - возвращает список книг (каждая книга - <class Book>)
+    #len(top) - возвращает кол-во книг
+    #top.title или str(top) - возвращает название топа
+
+class Book:
+    #book.title - название
+    #book.author - автора
+    #book.desription - описание
+    #book.cover - путь к файлу обложки (это надо вставить в тег <img>: <img src='{{ book.cover }}'></img>)
+    #book.rating - рейтинг
+
+class Review:
+    #review.rating - оценка
+    #review.text - текст отзыва
+    #str(review.author) или review.author(не точно) - имя автора

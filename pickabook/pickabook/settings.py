@@ -87,6 +87,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = configs.AUTH_USER_MODEL
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -106,3 +107,7 @@ USE_TZ = configs.USE_TZ
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = configs.STATIC_URL
+STATIC_ROOT = configs.STATIC_ROOT
+
+MEDIA_URL = configs.MEDIA_URL
+MEDIA_ROOT = configs.MEDIA_ROOT
