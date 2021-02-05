@@ -1,5 +1,30 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+import datetime
+
+
+class UserBookOperator:
+    def __init__(self, user, binder):
+        self.user = user
+        self.binder = binder
+
+    def __call__(self):
+        b = []
+        binders = self.binder.objects.filter(user=self.user).order_by('-date')
+        for binder in binders:
+            b.append(binder.book)
+        return b
+
+    def add(self, book):
+        binders = self.binder.objects.filter(book=book, user=self.user)
+        if not binders:
+            new_binder = self.binder(book=book, user=self.user, date=datetime.datetime.now())
+            new_binder.save()
+
+    def remove(self, book):
+        binders = self.binder.objects.filter(book=book, user=self.user)
+        if binders:
+            binders.delete()
 
 
 class Tag(models.Model):
@@ -68,6 +93,7 @@ class Top(models.Model):
             binders.delete()
             self.fix_order()
 
+    @property
     def books(self):
         b = []
         self.fix_order()
@@ -99,6 +125,12 @@ class BookTopBinder(models.Model):
 
 class User(AbstractUser):
     avatar = models.ImageField(upload_to='avatars/', default='default.png')
+
+##    def __init__(self):
+##        super().__init__()
+##        self.favourites = UserBookOperator(self, FavouriteBookBinder)
+##        self.wish_list = UserBookOperator(self, WishListBookBinder)
+##        self.finished = UserBookOperator(self, FinishedBookBinder)
 
 
 class BookUserBinder(models.Model):
