@@ -1,0 +1,14 @@
+
+<form action="{{ app_path }}" method="post" id="register-form">
+        {% csrf_token %}
+        <div class="authorization-label">{{ form.username.label }}</div>
+        {{ form.username }}
+        <div class="authorization-label">{{ form.email.label }}</div>
+        {{ form.email }}
+        <div class="authorization-label">{{ form.password1.label }}</div>
+        {{ form.password1 }}
+        <div class="authorization-label">{{ form.password2.label }}</div>
+        {{ form.password2 }}
+        <input type="hidden" name="next" value="{{ next }}" />
+        <input class="authorization-submit" type="submit" value="Зарегистрироваться">
+</form>
