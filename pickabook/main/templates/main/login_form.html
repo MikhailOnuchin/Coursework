@@ -1,0 +1,11 @@
+
+<form action="{{ app_path }}" method="post" id="login-form">
+        {% csrf_token %}
+        <div class="authorization-label">{{ form.username.label }}</div>
+        {{ form.username }}
+        <div class="authorization-label">{{ form.password.label }}</div>
+        {{ form.password }}
+		<a href='/main/reset'>Забыли пароль?</a>
+        <input type="hidden" name="next" value="{{ next }}" />
+        <input class="authorization-submit" type="submit" value="Войти">
+    </form>
