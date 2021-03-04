@@ -27,10 +27,20 @@ class UserBookOperator:
             binders.delete()
 
 
+class Category(models.Model):
+    objects = models.Manager()
+
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Tag(models.Model):
     objects = models.Manager()
 
     name = models.CharField(max_length=100, unique=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -103,10 +113,10 @@ class Top(models.Model):
         return b
 
     def __iter__(self):
-        return iter(self.books())
+        return iter(self.books)
 
     def __len__(self):
-        return len(self.books())
+        return len(self.books)
 
     def __str__(self):
         return self.title
@@ -126,11 +136,11 @@ class BookTopBinder(models.Model):
 class User(AbstractUser):
     avatar = models.ImageField(upload_to='avatars/', default='default.png')
 
-##    def __init__(self):
-##        super().__init__()
-##        self.favourites = UserBookOperator(self, FavouriteBookBinder)
-##        self.wish_list = UserBookOperator(self, WishListBookBinder)
-##        self.finished = UserBookOperator(self, FinishedBookBinder)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.favourites = UserBookOperator(self, FavouriteBookBinder)
+        self.wish_list = UserBookOperator(self, WishListBookBinder)
+        self.finished = UserBookOperator(self, FinishedBookBinder)
 
 
 class BookUserBinder(models.Model):
