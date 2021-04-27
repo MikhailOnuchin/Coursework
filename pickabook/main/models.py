@@ -40,7 +40,7 @@ class Tag(models.Model):
     objects = models.Manager()
 
     name = models.CharField(max_length=100, unique=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name
@@ -52,7 +52,7 @@ class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
     description = models.TextField()
-    cover = models.ImageField(upload_to='covers/', default='default.png')
+    cover = models.CharField(max_length=100, default='main/covers/default.png')
     tags = models.ManyToManyField(Tag)
     rating = models.IntegerField(default=10)
 
@@ -135,12 +135,24 @@ class BookTopBinder(models.Model):
 
 class User(AbstractUser):
     avatar = models.ImageField(upload_to='avatars/', default='default.png')
+    preferences = models.TextField(default='{}')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.favourites = UserBookOperator(self, FavouriteBookBinder)
         self.wish_list = UserBookOperator(self, WishListBookBinder)
         self.finished = UserBookOperator(self, FinishedBookBinder)
+
+
+class RecommendationBinder(models.Model):
+    objects = models.Manager()
+
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    value = models.IntegerField()
+
+    def __str__(self):
+        return str(self.user) + ' -rec- ' + str(self.book) + ' --- ' + str(self.value)
 
 
 class BookUserBinder(models.Model):

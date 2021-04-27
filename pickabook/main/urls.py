@@ -7,6 +7,10 @@ urlpatterns = [
     path('', views.main_page, name='main'),
     path('top/<int:top_id>', views.top_page, name='top_url'),
     path('book/<int:book_id>', views.book_page, name='book_url'),
+    path('profile', views.profile_page, name='profile'),
+    path('set-preferences', views.set_preferences, name='set_preferences'),
+    path('clear-preferences', views.clear_preferences, name='clear_preferences'),
+    path('get-preferences', views.get_preferences, name='get_preferences'),
     path('test', views.test)
 ]
 

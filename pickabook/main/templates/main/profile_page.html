@@ -1,0 +1,26 @@
+{{ user.favourites }}
+{{ user.wish_list }}
+{{ user.finished }}
+
+
+{% for tag in tags %}
+    <div class="tag {% if tag.status == 1 %}selected_positive{% elif tag.status == -1 %}selected_negative{% endif %}">{{ tag.name }}</div>
+{% endfor %}
+<button onclick="clear_preferences()">Сбросить предпочтения</button>
+<button id='cancel_edit_preferences_button' onclick="cancel_edit_preferences()" hidden>Отмена</button>
+<button id='edit_preferences_button' onclick="edit_preferences()">Изменить</button>
+<button id='save_preferences_button' onclick="save_preferences()" hidden>Сохранить</button>
+<style>
+    .selected_positive {
+        background: green;
+    }
+    .selected_negative {
+        background: red;
+    }
+</style>
+<script>
+    function getCSRF() {
+        return '{{ csrf_token }}'
+    }
+</script>
+{% include 'main/footer.html' %}
