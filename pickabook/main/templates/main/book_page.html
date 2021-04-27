@@ -1,0 +1,27 @@
+{% load static %}
+{% include "main/header.html" %}
+
+<div class="book-name-block">
+
+    <div class="book-name">
+        <a>{{ book.title }}</a>
+    </div>
+
+</div>
+<div class="book-author-block">
+    <a>{{ book.author}}</a>
+</div>
+
+<div class="book-page-block">
+    <div class="book-page-cover">
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='{{ book.cover }}' width="190" height="240"> </a>
+    </div>
+
+    <div class="book-page-rating">
+        <a>Рейтинг: {{ book.rating }}</a></div>
+    </div>
+   <div class="">
+
+   </div>
+
+</div>

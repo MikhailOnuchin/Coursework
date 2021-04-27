@@ -1,0 +1,22 @@
+{% load static %}
+{% include "main/header.html" %}
+
+{% for top in tops %}
+
+    <div class="main-block-top">
+        <div class="main-block-top-title">
+            <a href="{% url 'top_url' top_id=top.id %}">  {{ top.title }} </a>
+        </div>
+        <div class="main-block-top-books">
+        {% for book in top.books %}
+            <div class="main-top-book">
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='{{ book.cover }}' width="70" height="100"> </a>
+                <figcaption>{{ book.title }} </figcaption>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+{% endfor %}
+
+{% include "main/footer.html" %}

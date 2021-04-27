@@ -1,0 +1,38 @@
+{% load static %}
+{% include "main/head.html" %}
+<div class="header">
+
+    <div class="logo">
+        <a href="{% url 'main' %}">
+            <span class="pickabook">Pickabook</span>
+        </a>
+        <p>Поиск книг</p>
+    </div>
+    {% if user.is_authenticated %}
+        <div class="block-top-username">
+            <p><a href="#">Имя пользователя</a></p>
+            <a href="{% url 'logout' %}">Выйти</a>
+        </div>
+    {% else %}
+        <div class="block-top-auth">
+            <p><a href="{% url 'login' %}">Вход</a></p>
+            <p><a href="{% url 'register' %}">Регистрация</a></p>
+        </div>
+    {% endif %}
+
+    <div class="top-menu">
+        <div class="top-menu-item"><a href="#">Раздел1</a></div>
+        <div class="top-menu-item"><a href="#">Раздел2</a></div>
+        <div class="top-menu-item"><a href="#">Раздел3</a></div>
+        <div class="top-menu-item"><a href="#">Раздел4</a></div>
+        <div class="top-menu-item"><a href="#">Раздел5</a></div>
+        <div class="top-menu-item">
+                <input type="text" placeholder="Search.." name="search">
+        </div>
+        <div class="top-menu-item">
+            <button type="submit"></button>
+        </div>
+    </div>
+</div>
+
+<div class="content">

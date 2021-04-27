@@ -1,3 +1,5 @@
+{% load static %}
+{% include "main/header.html" %}
 
 <form action="{{ app_path }}" method="post" id="login-form">
         {% csrf_token %}
