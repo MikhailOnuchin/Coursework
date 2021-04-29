@@ -1,13 +1,22 @@
 {% load static %}
 {% include "main/header.html" %}
 
-<form action="{{ app_path }}" method="post" id="login-form">
+
+<div class="login-form">
+    <div class="login-form-title"><a> Авторизация</a></div>
+    <form action="{{ app_path }}" method="post" id="login-form" class="login">
         {% csrf_token %}
-        <div class="authorization-label">{{ form.username.label }}</div>
+        <div class="login-form-block">
+            <div class="authorization-label">{{ form.username.label }}</div>
         {{ form.username }}
-        <div class="authorization-label">{{ form.password.label }}</div>
+            <div class="authorization-label">{{ form.password.label }}</div>
         {{ form.password }}
-		<a href='/main/reset'>Забыли пароль?</a>
+		<br /><a href='/main/reset'>Забыли пароль?</a>
         <input type="hidden" name="next" value="{{ next }}" />
-        <input class="authorization-submit" type="submit" value="Войти">
+        <br /><input class="authorization-submit" type="submit" value="Войти">
+        </div>
     </form>
+</div>
+
+
+{% include "main/footer.html" %}

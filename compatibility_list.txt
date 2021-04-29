@@ -32,7 +32,7 @@ class Top:
 class Book:
     #book.title - название
     #book.author - автора
-    #book.desription - описание
+    #book.description - описание
     #book.cover - путь к файлу обложки (это надо вставить в тег <img>: <img src='{{ book.cover }}'></img>)
     #book.rating - рейтинг
 

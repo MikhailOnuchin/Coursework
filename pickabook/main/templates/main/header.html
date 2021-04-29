@@ -10,7 +10,7 @@
     </div>
     {% if user.is_authenticated %}
         <div class="block-top-username">
-            <p><a href="#">Имя пользователя</a></p>
+            <p><a href="{% url 'profile' %}">Личный кабинет</a></p>
             <a href="{% url 'logout' %}">Выйти</a>
         </div>
     {% else %}

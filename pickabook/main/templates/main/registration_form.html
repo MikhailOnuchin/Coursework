@@ -1,6 +1,11 @@
+{% load static %}
+{% include "main/header.html" %}
 
+<div class="reg-form">
+    <div class="reg-form-title"><a> Регистрация</a></div>
 <form action="{{ app_path }}" method="post" id="register-form">
         {% csrf_token %}
+    <div class="reg-from-block">
         <div class="authorization-label">{{ form.username.label }}</div>
         {{ form.username }}
         <div class="authorization-label">{{ form.email.label }}</div>
@@ -11,4 +16,8 @@
         {{ form.password2 }}
         <input type="hidden" name="next" value="{{ next }}" />
         <input class="authorization-submit" type="submit" value="Зарегистрироваться">
+    </div>
 </form>
+</div>
+
+{% include "main/footer.html" %}

@@ -1,26 +1,98 @@
-{{ user.favourites }}
-{{ user.wish_list }}
-{{ user.finished }}
+{% load static %}
+{% include "main/header.html" %}
+
+<div class="profile_information-block">
+    <div class="information">
+
+        <div class="information-item"><a>Логин</a></div>
+        <div class="information-item"><a>E-mail</a></div>
+        <div class="information-item"><a>Cменить пароль</a></div>
+
+        <div class="user-statistics">
+            <a>xxx дней на Pickabook</a>
+            <a>xxx книг прочитано</a>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="main-block-top">
+    <div class="main-block-top-title">
+        <a> Избранное </a>
+    </div>
+    <div class="main-block-top-books">
+        {% for book in user.favourites %}
+            <div class="main-top-book">
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='{{ book.cover }}' width="70" height="100"> </a>
+                <figcaption>{{ book.title }} </figcaption>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="main-block-top">
+    <div class="main-block-top-title">
+        <a> Хочу прочитать </a>
+    </div>
+    <div class="main-block-top-books">
+        {% for book in user.wishlist %}
+            <div class="main-top-book">
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='{{ book.cover }}' width="70" height="100"> </a>
+                <figcaption>{{ book.title }} </figcaption>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="main-block-top">
+    <div class="main-block-top-title">
+        <a> Прочитано </a>
+    </div>
+    <div class="main-block-top-books">
+        {% for book in user.finished %}
+            <div class="main-top-book">
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='{{ book.cover }}' width="70" height="100"> </a>
+                <figcaption>{{ book.title }} </figcaption>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{#{{ user.favourites }}#}
+{#{{ user.wish_list }}#}
+{#{{ user.finished }}#}
+
+<div class="preferences-title"><a>Выберите предпочтения:</a></div>
+
+<div class="preferences-block">
 
 
-{% for tag in tags %}
-    <div class="tag {% if tag.status == 1 %}selected_positive{% elif tag.status == -1 %}selected_negative{% endif %}">{{ tag.name }}</div>
-{% endfor %}
-<button onclick="clear_preferences()">Сбросить предпочтения</button>
-<button id='cancel_edit_preferences_button' onclick="cancel_edit_preferences()" hidden>Отмена</button>
-<button id='edit_preferences_button' onclick="edit_preferences()">Изменить</button>
-<button id='save_preferences_button' onclick="save_preferences()" hidden>Сохранить</button>
-<style>
-    .selected_positive {
-        background: green;
-    }
-    .selected_negative {
-        background: red;
-    }
-</style>
-<script>
-    function getCSRF() {
-        return '{{ csrf_token }}'
-    }
-</script>
+    <div class="tag-preferences">
+        {% for tag in tags %}
+            <div class="tag {% if tag.status == 1 %}selected_positive{% elif tag.status == -1 %}selected_negative{% endif %}">{{ tag.name }}</div>
+        {% endfor %}
+    </div>
+    <style>
+        .selected_positive {
+            background: green;
+        }
+
+        .selected_negative {
+            background: red;
+        }
+    </style>
+    <script>
+        function getCSRF() {
+            return '{{ csrf_token }}'
+        }
+    </script>
+
+</div>
+<div class="preferences-button">
+    <button onclick="clear_preferences()">Сбросить предпочтения</button>
+    <button id='cancel_edit_preferences_button' onclick="cancel_edit_preferences()" hidden>Отмена</button>
+    <button id='edit_preferences_button' onclick="edit_preferences()">Изменить</button>
+    <button id='save_preferences_button' onclick="save_preferences()" hidden>Сохранить</button>
+</div>
 {% include 'main/footer.html' %}
