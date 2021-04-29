@@ -1,6 +1,31 @@
 {% load static %}
 {% include "main/header.html" %}
 
+{% if user.is_authenticated %}
+<div class="main-block-top">
+        <div class="main-block-top-title">
+            <a href="#">Личные рекомендации</a>
+        </div>
+    {% if can_recommend %}
+        <div class="main-block-top-books">
+        {% for book in personal %}
+            <div class="main-top-book">
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='/static/{{ book.cover }}' width="70" height="100"> </a>
+                <figcaption>{{ book.title }} </figcaption>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        error
+    {% endif %}
+    </div>
+ {% else %}
+    <div class="main-top-book">
+                <a> Авторизируйтесь для подборки персональных рекомендаций</a>
+    </div>
+
+{% endif %}
+
 {% for top in tops %}
 
     <div class="main-block-top">
@@ -10,29 +35,15 @@
         </div>
 
         <div class="main-block-top-books">
-{#            {% if user.is_authenticated %}#}
-{##}
-{#                {% for book in personal %}#}
-{#                    <a href="{% url 'book_url' book_id=book.id %}"><img src='{{ book.cover }}' width="70" height="100">#}
-{#                    </a>#}
-{#                    <figcaption>{{ book.title }} </figcaption>#}
-{#                {% endfor %}#}
-{##}
-{#            {% else %}#}
-{##}
-{#                <div class="main-top-book">#}
-{#                    Авторизируйтесь для подборки персональных рекомендаций#}
-{#                </div>#}
-{##}
-{#            {% endif %}#}
 
-            {% for book in top.books %}
-                <div class="main-top-book">
-                    <a href="{% url 'book_url' book_id=book.id %}"><img src='{{ book.cover }}' width="70" height="100">
-                    </a>
-                    <figcaption>{{ book.title }} </figcaption>
-                </div>
-            {% endfor %}
+
+        {% for book in top.books %}
+            <div class="main-top-book">
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='/static/{{ book.cover }}' width="70" height="100"> </a>
+                <figcaption>{{ book.title }} </figcaption>
+            </div>
+        {% endfor %}
+
         </div>
     </div>
 
