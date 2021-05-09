@@ -2,7 +2,7 @@
 from ...models import BookUserBinder, Book, RecommendationBinder, Tag, ThreadRecord
 import json
 import threading
-from django.db import transaction
+from ...recomendation_configs import positive_delta, negative_delta
 
 
 def count_value(book, user):
@@ -14,10 +14,6 @@ def count_value(book, user):
         for tag in used_tags:
             val += weights[tag.name][1]
     return val
-
-
-positive_delta = 0.05
-negative_delta = 0.05
 
 
 def recommendation_positive(book, user):
@@ -58,3 +54,19 @@ def update_recommendations(user):
         b.save()
     print('finished %s'.format(user))
     tr.delete()
+
+
+def thread_recommendations(user):
+    trs = ThreadRecord.objects.filter(user=user)
+    ts = {}
+    for thread in threading.enumerate():
+        ts[thread.ident] = thread
+    for tr in trs:
+        try:
+            thread = ts[tr.thread]
+            thread.do_run = False
+        except KeyError:
+            pass
+    t = threading.Thread(target=update_recommendations, args=(user,))
+    t.do_run = True
+    t.start()

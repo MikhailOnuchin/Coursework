@@ -2,9 +2,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from ..complementary.recommendation_scripts.count_value import recommendation_positive, recommendation_negative
+from ..complementary.recommendation_scripts.count_value import recommendation_positive, recommendation_negative, thread_recommendations
 from ..decorators import xhr_required
-from ..models import Book, RecommendationBinder, Review, FinishedBookBinder, WishListBookBinder
+from ..models import Book, RecommendationBinder, Review
 
 
 def book_page(request, book_id):
@@ -104,4 +104,24 @@ def get_review(request):
     r.book = book
     r.author = request.user
     r.save()
+    return HttpResponse('ok')
+
+
+@login_required(login_url='login', redirect_field_name=None)
+@xhr_required
+def positive_recommendation(request):
+    book_id = request.POST.get('book_id')
+    book = Book.objects.get(id=book_id)
+    recommendation_positive(book, request.user)
+    thread_recommendations(request.user)
+    return HttpResponse('ok')
+
+
+@login_required(login_url='login', redirect_field_name=None)
+@xhr_required
+def negative_recommendation(request):
+    book_id = request.POST.get('book_id')
+    book = Book.objects.get(id=book_id)
+    recommendation_negative(book, request.user)
+    thread_recommendations(request.user)
     return HttpResponse('ok')

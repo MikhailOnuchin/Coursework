@@ -5,6 +5,14 @@
 {# Не делай фиксированную ширину для поля названия, может не помещаться, пусь растягивается под размер #}
 {# В поле где должен быть список топов для книги виден только 1, если их несколько. Пример: http://127.0.0.1:8000/main/book/33677. В коде страницы 3 топа, виден 1 #}
 <div class="book-page-main-block">
+    {% if is_recommended %}
+        {# Нужны стили #}
+        <div id="recommendation_review">
+        Эта книга находится у вас в персональных рекомендациях
+            <div><button id="recommendation_positive_btn" onclick="recommendation_positive()">Понравилась рекомендация</button></div>
+            <div><button id="recommendation_negative_btn" onclick="recommendation_negative()">Не понравилась рекомендация</button></div>
+        </div>
+    {% endif %}
     <div class="book-name-block">
 
         <div class="book-name">
@@ -23,6 +31,7 @@
         {# Пожалуйста, придумай нормальные надписи, мне в голову не лезет, а эти выглядят топорно и чутка непонятно иногда #}
         {# Да, кстати, можешь сделать этим дивам анимацию на клик, например, смену цвета или около того, через div:active, вроде. Почитай про псевдоклассы css #}
         <div class="book-page-description">
+        {% if user.is_authorized %}
             {% if is_finished %}
                 <div class="description-item finished_btns" onclick="make_finished()" hidden>Прочитана</div>
                 <div class="description-item finished_btns" onclick="make_unfinished()">Не прочитана</div>
@@ -44,6 +53,12 @@
                 <div class="description-item wanted_btns" onclick="make_wanted()">Хочу прочитать</div>
                 <div class="description-item wanted_btns" onclick="make_unwanted()" hidden>Не хочу прочитать</div>
             {% endif %}
+        {% else %}
+            {# Сделай что-то, чтобы было видно, что кнопки неактивны #}
+            <div class="description-item">Прочитана</div>
+            <div class="description-item">В избранное</div>
+            <div class="description-item">Хочу прочитать</div>
+        {% endif %}
             <div class="description-top-item">
             {% for top in top_list %}
                 <a>{{ top.title }}</a>

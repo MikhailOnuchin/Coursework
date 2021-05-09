@@ -3,6 +3,30 @@
 const book_id = window.location.href.split('/').slice(-1).pop()
 
 
+function recommendation_positive() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/main/recommendation-positive', false);
+    xhr.setRequestHeader('X-CSRFToken', getCSRF());
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('is_xhr=true&book_id=' + book_id);
+    if(xhr.responseText == 'ok') {
+        $('#recommendation_review')[0].hidden = true;
+    }
+}
+
+
+function recommendation_negative() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/main/recommendation-negative', false);
+    xhr.setRequestHeader('X-CSRFToken', getCSRF());
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('is_xhr=true&book_id=' + book_id);
+    if(xhr.responseText == 'ok') {
+        $('#recommendation_review')[0].hidden = true;
+    }
+}
+
+
 function toggle_buttons(type) {
     var btns = $('.' + type + '_btns');
     if(btns[0].hidden) {
