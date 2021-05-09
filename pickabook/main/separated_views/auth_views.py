@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate
 from django.views import View
 from ..models import *
 from ..forms import *
+from ..complementary.recommendation_scripts.check_preferences import check_user
 
 
 class RegistrationView(View):
@@ -20,7 +21,7 @@ class RegistrationView(View):
                 user = form.save()
                 user.save()
                 login(request, user)
-                print(request.user)
+                check_user(user)
                 return redirect('/main')
         else:
             form = self.form_class(request.POST)

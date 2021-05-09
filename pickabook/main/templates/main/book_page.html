@@ -1,6 +1,9 @@
 {% load static %}
 {% include "main/header.html" %}
 
+{# Ширину поля для рейтинга сделай побольше, не вмещается #}
+{# Не делай фиксированную ширину для поля названия, может не помещаться, пусь растягивается под размер #}
+{# В поле где должен быть список топов для книги виден только 1, если их несколько. Пример: http://127.0.0.1:8000/main/book/33677. В коде страницы 3 топа, виден 1 #}
 <div class="book-page-main-block">
     <div class="book-name-block">
 
@@ -15,17 +18,32 @@
 
     <div class="book-page-block">
         <div class="book-page-cover">
-            <a href="{% url 'book_url' book_id=book.id %}"><img src='/static/{{ book.cover }}' width="190" height="240"> </a>
+            <a href="{% url 'book_url' book_id=book.id %}"><img src='{% static book.cover %}' width="190" height="240"> </a>
         </div>
-
+        {# Пожалуйста, придумай нормальные надписи, мне в голову не лезет, а эти выглядят топорно и чутка непонятно иногда #}
+        {# Да, кстати, можешь сделать этим дивам анимацию на клик, например, смену цвета или около того, через div:active, вроде. Почитай про псевдоклассы css #}
         <div class="book-page-description">
             {% if is_finished %}
-                <div class="description-item"><a>Прочитана</a></div>
+                <div class="description-item finished_btns" onclick="make_finished()" hidden>Прочитана</div>
+                <div class="description-item finished_btns" onclick="make_unfinished()">Не прочитана</div>
             {% else %}
-                <div class="description-item"><a>Не прочитана</a></div>
+                <div class="description-item finished_btns" onclick="make_finished()">Прочитана</div>
+                <div class="description-item finished_btns" onclick="make_unfinished()" hidden>Не прочитана</div>
             {% endif %}
-            <div class="description-item"><a>В избранное</a></div>
-            <div class="description-item"><a>Хочу прочитать</a></div>
+            {% if is_favourite %}
+                <div class="description-item favourite_btns" onclick="make_favourite()" hidden>В избранное</div>
+                <div class="description-item favourite_btns" onclick="make_unfavourite()">Из избранного</div>
+            {% else %}
+                <div class="description-item favourite_btns" onclick="make_favourite()">В избранное</div>
+                <div class="description-item favourite_btns" onclick="make_unfavourite()" hidden>Из избранного</div>
+            {% endif %}
+            {% if is_in_wish_list %}
+                <div class="description-item wanted_btns" onclick="make_wanted()" hidden>Хочу прочитать</div>
+                <div class="description-item wanted_btns" onclick="make_unwanted()">Не хочу прочитать</div>
+            {% else %}
+                <div class="description-item wanted_btns" onclick="make_wanted()">Хочу прочитать</div>
+                <div class="description-item wanted_btns" onclick="make_unwanted()" hidden>Не хочу прочитать</div>
+            {% endif %}
             <div class="description-top-item">
             {% for top in top_list %}
                 <a>{{ top.title }}</a>
@@ -47,8 +65,35 @@
 
     <div class="book-review-block">
         <a> Отзывы пользователей:</a>
-
+        {% for review in reviews %}
+            {# Сделай красивенькие отзывы #}
+            {{ review.author }}
+            {{ review.rating }}
+            {{ review.text }}
+        {% endfor %}
+        {# Тут тоже оберни как надо #}
+        <input id="review_text" type="text">
+        <select id="review_rating">
+            <option selected disabled hidden>---</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+        </select>
+        <button id="review_send" onclick="send_review()" disabled>Отправить отзыв</button>
     </div>
 
 </div>
+<script>
+    function getCSRF() {
+        return '{{ csrf_token }}'
+    }
+</script>
+
 {% include "main/footer.html" %}

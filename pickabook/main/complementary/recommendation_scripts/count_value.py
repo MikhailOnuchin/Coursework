@@ -1,6 +1,7 @@
 # coding=windows-1251
-from ...models import BookUserBinder, Book, RecommendationBinder
+from ...models import BookUserBinder, Book, RecommendationBinder, Tag, ThreadRecord
 import json
+import threading
 from django.db import transaction
 
 
@@ -37,10 +38,17 @@ def recommendation_negative(book, user):
     user.save()
 
 
-@transaction.atomic
 def update_recommendations(user):
-    books = Book.objects.all()
+    t = threading.currentThread()
+    tr = ThreadRecord(user=user, thread=t.ident)
+    tr.save()
+    preferences = json.loads(user.preferences)
+    positive = [Tag.objects.get(name=val) for val in list(preferences) if preferences[val][0] == 1]
+    negative = [Tag.objects.get(name=val) for val in list(preferences) if preferences[val][0] == -1]
+    books = Book.objects.exclude(tags__in=negative).filter(tags__in=positive).distinct()
     for book in books:
+        if not t.do_run:
+            break
         val = count_value(book, user)
         try:
             b = RecommendationBinder.objects.get(book=book, user=user)
@@ -48,3 +56,5 @@ def update_recommendations(user):
             b = RecommendationBinder(book=book, user=user)
         b.value = val
         b.save()
+    print('finished %s'.format(user))
+    tr.delete()

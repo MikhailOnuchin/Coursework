@@ -20,11 +20,13 @@ class UserBookOperator:
         if not binders:
             new_binder = self.binder(book=book, user=self.user, date=datetime.datetime.now())
             new_binder.save()
+            return 1
 
     def remove(self, book):
         binders = self.binder.objects.filter(book=book, user=self.user)
         if binders:
             binders.delete()
+            return 1
 
 
 class Category(models.Model):
@@ -54,7 +56,7 @@ class Book(models.Model):
     description = models.TextField()
     cover = models.CharField(max_length=100, default='main/covers/default.png')
     tags = models.ManyToManyField(Tag)
-    rating = models.IntegerField(default=10)
+    rating = models.FloatField(default=0)
 
     def top_list(self):
         t = []
@@ -62,6 +64,17 @@ class Book(models.Model):
         for binder in binders:
             t.append(binder.top)
         return t
+
+    def count_rating(self):
+        reviews = Review.objects.filter(book=self)
+        if reviews:
+            s = 0
+            for review in reviews:
+                s += review.rating
+            self.rating = s / len(reviews)
+        else:
+            self.rating = 0
+        self.save()
 
     def __str__(self):
         return self.author + ' - ' + self.title
@@ -191,3 +204,10 @@ class Review(models.Model):
 
     def __str__(self):
         return str(self.author) + " @ " + str(self.book)
+
+
+class ThreadRecord(models.Model):
+    objects = models.Manager()
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    thread = models.IntegerField(null=True)

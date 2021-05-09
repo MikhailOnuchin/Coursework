@@ -1,14 +1,15 @@
 # coding=windows-1251
-from threading import Thread
+import threading
 from django.shortcuts import render
 from django.http.response import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .decorators import xhr_required
 from .models import *
-from .separated_views.auth_views import *
 from .complementary.recommendation_scripts.check_preferences import check_user
 from .complementary.recommendation_scripts.count_value import recommendation_positive, update_recommendations
 import json
+from .separated_views.auth_views import *
+from .separated_views.book_views import *
 
 
 def preferences_set(user):
@@ -37,29 +38,6 @@ def top_page(request, top_id):
     return render(request, 'main/top_page.html', {'top': top})
 
 
-def book_page(request, book_id):
-    book = Book.objects.get(id=book_id)
-    user = request.user
-    is_recommended = False
-    if user.is_authenticated:
-        try:
-            b = RecommendationBinder.objects.get(user=user, book=book)
-            is_recommended = b in RecommendationBinder.objects.filter(user=request.user).order_by('-value')[:100]
-        except RecommendationBinder.DoesNotExist:
-            pass
-    is_favourite = user.is_authenticated and (book in user.favourites())
-    is_in_wish_list = user.is_authenticated and (book in user.wish_list())
-    is_finished = user.is_authenticated and (book in user.finished())
-    reviews = Review.objects.filter(book=book)
-    return render(request, 'main/book_page.html', {'book': book,
-                                                   'is_recommended': is_recommended,
-                                                   'is_favourite': is_favourite,
-                                                   'is_in_wish_list': is_in_wish_list,
-                                                   'is_finished': is_finished,
-                                                   'top_list': book.top_list(),
-                                                   'reviews': reviews})
-
-
 def weights_list(weights):
     res = []
     for tag in weights.keys():
@@ -71,7 +49,8 @@ def weights_list(weights):
 @login_required(login_url='login', redirect_field_name=None)
 def profile_page(request):
     tags = weights_list(json.loads(request.user.preferences))
-    return render(request, 'main/profile_page.html', {'tags': tags, 'scripts': ['profile_script']})
+    return render(request, 'main/profile_page.html', {'tags': tags,
+                                                      'scripts': ['profile_script']})
 
 
 positive_base = 5
@@ -82,7 +61,6 @@ negative_base = -50
 @xhr_required
 def set_preferences(request):
     preferences = json.loads(request.POST.get('preferences'))
-    print(preferences)
     user = request.user
     check_user(user)
     weights = json.loads(user.preferences)
@@ -96,7 +74,18 @@ def set_preferences(request):
     user.save()
     for book in user.favourites():
         recommendation_positive(book, user)
-    t = Thread(target=update_recommendations, args=(user,))
+    trs = ThreadRecord.objects.filter(user=user)
+    ts = {}
+    for thread in threading.enumerate():
+        ts[thread.ident] = thread
+    for tr in trs:
+        try:
+            thread = ts[tr.thread]
+            thread.do_run = False
+        except KeyError:
+            pass
+    t = threading.Thread(target=update_recommendations, args=(user,))
+    t.do_run = True
     t.start()
     return HttpResponse('ok')
 

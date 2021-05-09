@@ -10,7 +10,7 @@
         <div class="main-block-top-books">
         {% for book in personal %}
             <div class="main-top-book">
-                <a href="{% url 'book_url' book_id=book.id %}"><img src='/static/{{ book.cover }}' width="70" height="100"> </a>
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='{% static book.cover %}' width="70" height="100"> </a>
                 <figcaption>{{ book.title }} </figcaption>
             </div>
         {% endfor %}
@@ -39,7 +39,7 @@
 
         {% for book in top.books %}
             <div class="main-top-book">
-                <a href="{% url 'book_url' book_id=book.id %}"><img src='/static/{{ book.cover }}' width="70" height="100"> </a>
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='{% static book.cover %}' width="70" height="100"> </a>
                 <figcaption>{{ book.title }} </figcaption>
             </div>
         {% endfor %}

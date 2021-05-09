@@ -13,7 +13,7 @@
     <div class="top-book-block">
         <div class="top-book">
             <div class="top-book-cover">
-                <a href="{% url 'book_url' book_id=book.id %}"><img src='{{ book.cover }}' width="80" height="120"> </a>
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='{% static book.cover %}' width="80" height="120"> </a>
             </div>
             <div class="top-book-title">
                 <a href="{% url 'book_url' book_id=book.id %}">{{ book.title }}</a></div>

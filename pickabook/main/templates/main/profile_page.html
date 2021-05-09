@@ -24,7 +24,7 @@
     <div class="main-block-top-books">
         {% for book in user.favourites %}
             <div class="main-top-book">
-                <a href="{% url 'book_url' book_id=book.id %}"><img src='{{ book.cover }}' width="70" height="100"> </a>
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='{% static book.cover %}' width="70" height="100"> </a>
                 <figcaption>{{ book.title }} </figcaption>
             </div>
         {% endfor %}
@@ -36,9 +36,9 @@
         <a> Хочу прочитать </a>
     </div>
     <div class="main-block-top-books">
-        {% for book in user.wishlist %}
+        {% for book in user.wish_list %}
             <div class="main-top-book">
-                <a href="{% url 'book_url' book_id=book.id %}"><img src='{{ book.cover }}' width="70" height="100"> </a>
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='{% static book.cover %}' width="70" height="100"> </a>
                 <figcaption>{{ book.title }} </figcaption>
             </div>
         {% endfor %}
@@ -52,7 +52,7 @@
     <div class="main-block-top-books">
         {% for book in user.finished %}
             <div class="main-top-book">
-                <a href="{% url 'book_url' book_id=book.id %}"><img src='{{ book.cover }}' width="70" height="100"> </a>
+                <a href="{% url 'book_url' book_id=book.id %}"><img src='{% static book.cover %}' width="70" height="100"> </a>
                 <figcaption>{{ book.title }} </figcaption>
             </div>
         {% endfor %}
