@@ -71,7 +71,7 @@ class Book(models.Model):
             s = 0
             for review in reviews:
                 s += review.rating
-            self.rating = s / len(reviews)
+            self.rating = round(s / len(reviews), 1)
         else:
             self.rating = 0
         self.save()

@@ -19,7 +19,7 @@
 
 <div class="main-block-top">
     <div class="main-block-top-title">
-        <a> Избранное </a>
+        <a href="{% url 'favourite_url' %}"> Избранное </a>
     </div>
     <div class="main-block-top-books">
         {% for book in user.favourites %}
@@ -33,7 +33,7 @@
 
 <div class="main-block-top">
     <div class="main-block-top-title">
-        <a> Хочу прочитать </a>
+        <a href="{% url 'wish_list_url' %}"> Хочу прочитать </a>
     </div>
     <div class="main-block-top-books">
         {% for book in user.wish_list %}
@@ -47,7 +47,7 @@
 
 <div class="main-block-top">
     <div class="main-block-top-title">
-        <a> Прочитано </a>
+        <a href="{% url 'finished_url' %}"> Прочитано </a>
     </div>
     <div class="main-block-top-books">
         {% for book in user.finished %}

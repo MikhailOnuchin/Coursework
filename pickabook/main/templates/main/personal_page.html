@@ -4,12 +4,12 @@
 <div class="top-name-block">
 
     <div class="top-name">
-        {{ top.title }}
+        Персональные рекомендации
     </div>
 
 </div>
 
-{% for book in top.books %}
+{% for book in personal %}
     <div class="top-book-block">
         <div class="top-book">
             <div class="top-book-cover">
@@ -33,10 +33,26 @@
                     Свернуть описание
                 </div>
             </div>
+            {# С тебя красивые кнопочки #}
+            <div class="top-book-recommendation-buttons">
+                <div class="book-id" hidden>{{ book.id }}</div>
+                Оцените рекоммендацию:
+                <div class="top-book-recommendation-button recommendation-positive">
+                    Понравилась
+                </div>
+                <div class="top-book-recommendation-button recommendation-negative">
+                    Не понравилась
+                </div>
+            </div>
+            <div class="top-book-recommendation-done" hidden>Спасибо за ваш отзыв</div>
         </div>
         {# Добавь стиль для описания #}
         <div class="top-book-description" style="display: none">{{ book.description }}</div>
     </div>
 {% endfor %}
-
+<script>
+    function getCSRF() {
+        return '{{ csrf_token }}'
+    }
+</script>
 {% include "main/footer.html" %}

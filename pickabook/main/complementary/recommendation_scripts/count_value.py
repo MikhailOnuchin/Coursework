@@ -52,7 +52,6 @@ def update_recommendations(user):
             b = RecommendationBinder(book=book, user=user)
         b.value = val
         b.save()
-    print('finished %s'.format(user))
     tr.delete()
 
 

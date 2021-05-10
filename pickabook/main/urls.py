@@ -9,7 +9,11 @@ urlpatterns = [
     path('tops', views.blank, name='tops_url'),
     path('book/<int:book_id>', views.book_page, name='book_url'),
     path('books', views.blank, name='books_url'),
-    path('profile', views.profile_page, name='profile'),
+    path('profile', views.profile_page, name='profile_url'),
+    path('personal', views.personal_page, name='personal_url'),
+    path('favourite', views.favourite_page, name='favourite_url'),
+    path('wish-list', views.wish_list_page, name='wish_list_url'),
+    path('finished', views.finished_page, name='finished_url'),
     path('test', views.test)
 ]
 

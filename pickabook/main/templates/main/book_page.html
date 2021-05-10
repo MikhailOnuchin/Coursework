@@ -61,7 +61,7 @@
         {% endif %}
             <div class="description-top-item">
             {% for top in top_list %}
-                <a>{{ top.title }}</a>
+                <a href="{% url 'top_url' top_id=top.id %}">{{ top.title }}</a>
             {% endfor %}
             </div>
 

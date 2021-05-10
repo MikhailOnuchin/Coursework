@@ -4,7 +4,7 @@
 {% if user.is_authenticated %}
 <div class="main-block-top">
         <div class="main-block-top-title">
-            <a href="#">Личные рекомендации</a>
+            <a href="{% url 'personal_url' %}">Личные рекомендации</a>
         </div>
     {% if can_recommend %}
         <div class="main-block-top-books">

@@ -9,7 +9,6 @@ from ..models import Book, RecommendationBinder, Review
 
 def book_page(request, book_id):
     book = Book.objects.get(id=book_id)
-    book.count_rating()
     user = request.user
     is_recommended = False
     if user.is_authenticated:
@@ -104,6 +103,7 @@ def get_review(request):
     r.book = book
     r.author = request.user
     r.save()
+    book.count_rating()
     return HttpResponse('ok')
 
 
