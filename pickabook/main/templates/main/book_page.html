@@ -31,7 +31,7 @@
         {# Пожалуйста, придумай нормальные надписи, мне в голову не лезет, а эти выглядят топорно и чутка непонятно иногда #}
         {# Да, кстати, можешь сделать этим дивам анимацию на клик, например, смену цвета или около того, через div:active, вроде. Почитай про псевдоклассы css #}
         <div class="book-page-description">
-        {% if user.is_authorized %}
+        {% if user.is_authenticated %}
             {% if is_finished %}
                 <div class="description-item finished_btns" onclick="make_finished()" hidden>Прочитана</div>
                 <div class="description-item finished_btns" onclick="make_unfinished()">Не прочитана</div>
