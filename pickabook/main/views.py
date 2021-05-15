@@ -16,7 +16,7 @@ def preferences_set(user):
 
 
 def main_page(request):
-    tops = Top.objects.all()
+    tops = Top.objects.filter(show_on_main=True)
     personal = []
     can_recommend = False
     if request.user.is_authenticated:

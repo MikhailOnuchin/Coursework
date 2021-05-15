@@ -84,6 +84,7 @@ class Top(models.Model):
     objects = models.Manager()
 
     title = models.CharField(max_length=100)
+    show_on_main = models.BooleanField(default=False)
 
     def fix_order(self):
         binders = BookTopBinder.objects.filter(top=self).order_by('order')
